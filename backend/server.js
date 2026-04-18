@@ -17,17 +17,33 @@ const port = process.env.PORT || 4000;
 // Middleware
 app.use(express.json());
 
+// ✅ Updated CORS configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
+  "https://food-delivery-frontend-wn5j.onrender.com", // 🔥 add your deployed frontend
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5175",
-    ],
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed for this origin: " + origin));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
+
+// Optional: handle preflight requests explicitly
+app.options("*", cors());
 
 // Database connection
 connectDB();
@@ -49,5 +65,5 @@ app.get("/", (req, res) => {
 
 // Server listener
 app.listen(port, () => {
-  console.log(`🚀 Server started on http://localhost:${port}`);
+  console.log(`🚀 Server started on port ${port}`);
 });
