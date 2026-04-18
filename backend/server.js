@@ -17,41 +17,21 @@ const port = process.env.PORT || 4000;
 // Middleware
 app.use(express.json());
 
-// ✅ Updated CORS configuration
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:5175",
-  "https://food-delivery-frontend-wn5j.onrender.com", // 🔥 add your deployed frontend
-];
-
+// ✅ SIMPLE CORS (fix your error immediately)
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed for this origin: " + origin));
-      }
-    },
+    origin: "*", // allow all (for testing)
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
   }),
 );
-
-// Optional: handle preflight requests explicitly
-app.options("*", cors());
 
 // Database connection
 connectDB();
 
-// Static folder for uploaded images
+// Static folder
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-// API Endpoints
+// API routes
 app.use("/api/food", foodRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
@@ -63,7 +43,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// Server listener
+// Start server
 app.listen(port, () => {
   console.log(`🚀 Server started on port ${port}`);
 });
