@@ -4,7 +4,7 @@ import { StoreContext } from "./storeContext";
 
 const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "https://food-delivery-bwo2.onrender.com";
+  const url = "https://food-delivery-backend-89jw.onrender.com";
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
   const [restaurant_list, setRestaurantList] = useState([]);
