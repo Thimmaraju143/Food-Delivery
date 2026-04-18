@@ -14,36 +14,58 @@ import "dotenv/config.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// Middleware
+// ------------------ MIDDLEWARE ------------------
+
+// Parse JSON
 app.use(express.json());
 
-// ✅ SIMPLE CORS (fix your error immediately)
+// ✅ CORS CONFIG (use ONE of the below)
+
+// 🔹 OPTION 1: OPEN (for testing - use this first)
 app.use(
   cors({
-    origin: "*", // allow all (for testing)
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   }),
 );
 
-// Database connection
+/*
+// 🔹 OPTION 2: SECURE (use after testing works)
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://food-delivery-frontend-wn5j.onrender.com"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+*/
+
+// ------------------ DATABASE ------------------
 connectDB();
 
-// Static folder
+// ------------------ STATIC FILES ------------------
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-// API routes
+// ------------------ API ROUTES ------------------
 app.use("/api/food", foodRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/restaurant", restaurantRouter);
 
-// Root route
+// ------------------ ROOT ROUTE ------------------
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("API is working 🚀");
 });
 
-// Start server
+// ------------------ ERROR HANDLER (OPTIONAL) ------------------
+app.use((err, req, res, next) => {
+  console.error(err.message);
+  res.status(500).json({ success: false, message: err.message });
+});
+
+// ------------------ SERVER START ------------------
 app.listen(port, () => {
-  console.log(`🚀 Server started on port ${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });
