@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import "./Verify.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { StoreContext } from "../../context/StoreContext";
+import { StoreContext } from "../../context/storeContext";
 import axios from "axios";
 
 const Verify = () => {
@@ -13,27 +13,27 @@ const Verify = () => {
 
   console.log(success, orderId);
 
-  const verifyPayment = async () => {
+  const verifyPayment = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${url}/api/order/verify?success=${success}&orderId=${orderId}`
+        `${url}/api/order/verify?success=${success}&orderId=${orderId}`,
       );
       console.log(response.data);
 
       if (response.data.success) {
         navigate("/my-orders");
       } else {
-        navigate("/cart"); 
+        navigate("/cart");
       }
     } catch (error) {
       console.error("Error verifying payment", error);
       navigate("/cart");
     }
-  };
+  }, [url, success, orderId, navigate]);
 
   useEffect(() => {
     verifyPayment();
-  }, []);
+  }, [verifyPayment]);
 
   return (
     <div className="verify">

@@ -3,7 +3,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
 }
 
 .navbar .logo {
@@ -22,6 +21,41 @@
   display: flex;
   align-items: center;
   gap: 40px;
+}
+
+.navbar-search-container {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  border-radius: 25px;
+  padding: 8px 15px;
+  gap: 8px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.navbar-search-container:focus-within {
+  border-color: tomato;
+  box-shadow: 0 0 5px rgba(255, 127, 107, 0.3);
+}
+
+.navbar-search-container .search-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+.navbar-search-input {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #49557e;
+  width: 180px;
+}
+
+.navbar-search-input::placeholder {
+  color: #999;
 }
 
 .navbar button {
@@ -48,8 +82,8 @@
   cursor: pointer;
 }
 
-.navbar-search-icon{
-    position: relative;
+.navbar-search-icon {
+  position: relative;
 }
 
 .navbar-search-icon .dot {
@@ -62,19 +96,19 @@
   right: -8px;
 }
 
-.navbar-profile{
+.navbar-profile {
   position: relative;
   cursor: pointer;
 }
 
-.nav-profile-dropdown{
+.nav-profile-dropdown {
   position: absolute;
   display: none;
   right: 0;
   z-index: 1;
 }
 
-.navbar-profile:hover .nav-profile-dropdown{
+.navbar-profile:hover .nav-profile-dropdown {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -87,62 +121,62 @@
   cursor: pointer;
 }
 
-.nav-profile-dropdown li{
+.nav-profile-dropdown li {
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
 }
 
-.nav-profile-dropdown img{
+.nav-profile-dropdown img {
   width: 20px;
 }
 
-.nav-profile-dropdown li:hover{
+.nav-profile-dropdown li:hover {
   color: tomato;
 }
 
-@media (max-width:1050px){
-  .navbar .logo{
+@media (max-width: 1050px) {
+  .navbar .logo {
     width: 140px;
   }
-  .navbar-menu{
+  .navbar-menu {
     gap: 20px;
     font-size: 17px;
   }
-  .navbar-right{
+  .navbar-right {
     gap: 30px;
   }
-  .navbar-right img{
+  .navbar-right img {
     width: 22px;
   }
-  .navbar-right button{
+  .navbar-right button {
     padding: 8px 25px;
   }
 }
 
-@media (max-width:900px){
-  .navbar .logo{
+@media (max-width: 900px) {
+  .navbar .logo {
     width: 120px;
   }
-  .navbar-menu{
+  .navbar-menu {
     gap: 15px;
     font-size: 16px;
   }
-  .navbar-right{
+  .navbar-right {
     gap: 20px;
   }
-  .navbar-right img{
+  .navbar-right img {
     width: 20px;
   }
-  .navbar-right button{
+  .navbar-right button {
     padding: 7px 20px;
     font-size: 15px;
   }
 }
 
-@media (max-width:750px){
-  .navbar-menu{
+@media (max-width: 750px) {
+  .navbar-menu {
     display: none;
   }
 }

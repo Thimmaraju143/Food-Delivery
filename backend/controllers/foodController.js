@@ -1,4 +1,4 @@
-import foodModel from "../models/foodModel.mjs";
+import foodModel from "../models/foodModel.js";
 import fs from "fs";
 
 // ✅ Add Food Item
@@ -17,6 +17,7 @@ const addFood = async (req, res) => {
     price: req.body.price,
     category: req.body.category,
     image: image_filename,
+    restaurantId: req.body.restaurantId,
   });
 
   try {

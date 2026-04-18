@@ -3,10 +3,11 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { connectDB } from "./config/db.js";
-import foodRouter from "./routes/foodRoute.mjs";
-import userRouter from "./routes/userRouter.mjs";
-import cartRouter from "./routes/cartRoute.mjs";
-import { orderRouter } from "./routes/orderRouter.mjs";
+import foodRouter from "./routes/foodRoute.js";
+import userRouter from "./routes/userRouter.js";
+import cartRouter from "./routes/cartRoute.js";
+import { orderRouter } from "./routes/orderRouter.js";
+import restaurantRouter from "./routes/restaurantRoute.js";
 import "dotenv/config.js";
 
 // App config
@@ -25,7 +26,7 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 
 // Database connection
@@ -39,6 +40,7 @@ app.use("/api/food", foodRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/restaurant", restaurantRouter);
 
 // Root route
 app.get("/", (req, res) => {

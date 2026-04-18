@@ -15,14 +15,12 @@
 }
 
 .add-product-name,
-.add-product-description,
-.add-restaurant {
+.add-product-description {
   width: max(40%, 280px);
 }
 
 .add-product-name input,
-.add-product-description textarea,
-.add-restaurant select {
+.add-product-description textarea {
   padding: 10px;
 }
 
@@ -34,6 +32,14 @@
 .add-category-price select,
 .add-category-price input {
   max-width: 120px;
+  padding: 10px;
+}
+
+.add-delivery-time {
+  width: max(40%, 280px);
+}
+
+.add-delivery-time input {
   padding: 10px;
 }
 

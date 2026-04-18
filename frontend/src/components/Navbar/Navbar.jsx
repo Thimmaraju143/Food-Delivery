@@ -3,15 +3,24 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import { useContext } from "react";
-import { StoreContext } from "../../context/StoreContext";
+import { StoreContext } from "../../context/storeContext";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = ({ setShowLogin, onSearch }) => {
   const [menu, setMenu] = useState("menu");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
 
   const navigate = useNavigate();
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
 
   const Logout = () => {
     localStorage.removeItem("token");
@@ -56,34 +65,48 @@ const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right">
-        <img
-          src={assets.search_icon}
-          alt="Search Icon"
-          className="icon"
-          onError={(e) => console.error("Search icon failed to load", e)}
-        />
+        <div className="navbar-search-container">
+          <img
+            src={assets.search_icon}
+            alt="Search Icon"
+            className="search-icon"
+          />
+          <input
+            type="text"
+            placeholder="Search foods or restaurants..."
+            className="navbar-search-input"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
         <div className="navbar-search-icon">
           <Link to="/cart">
             <img src={assets.basket_icon} alt="Basket Icon" />
           </Link>
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
-        {!token}
-        <button onClick={() => setShowLogin(true)}>Sign In</button>:
-        <div className="navbar-profile">
-          <img src={assets.profile_icon} alt="" />
-          <ul className="nav-profile-dropdown">
-            <li onClick={()=>navigate('/myorders')}>
-              <img src={assets.bag_icon} alt="" />
-              <p>Orders</p>
-            </li>
-            <hr />
-            <li onClick={Logout}>
-              <img src={assets.logout_icon} alt="" />
-              <p>Logout</p>
-            </li>
-          </ul>
-        </div>
+        {!token ? (
+          <button onClick={() => setShowLogin(true)}>Sign In</button>
+        ) : (
+          <div className="navbar-profile">
+            <img src={assets.profile_icon} alt="Profile" />
+            <ul className="nav-profile-dropdown">
+              <li onClick={() => navigate("/profile")}>
+                <img src={assets.profile_icon} alt="" />
+                <p>Profile</p>
+              </li>
+              <li onClick={() => navigate("/myorders")}>
+                <img src={assets.bag_icon} alt="" />
+                <p>Orders</p>
+              </li>
+              <hr />
+              <li onClick={Logout}>
+                <img src={assets.logout_icon} alt="" />
+                <p>Logout</p>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

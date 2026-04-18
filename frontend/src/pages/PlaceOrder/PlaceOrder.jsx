@@ -1,14 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./PlaceOrder.css";
-import { StoreContext } from "../../context/StoreContext";
+import { StoreContext } from "../../context/storeContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount, token, food_list, cartItems, url } =
-    useContext(StoreContext);
+  const context = useContext(StoreContext);
+  const {
+    getTotalCartAmount = () => 0,
+    token,
+    food_list = [],
+    cartItems = {},
+    url,
+  } = context || {};
 
-    const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     firstName: "",
@@ -40,7 +46,11 @@ const PlaceOrder = () => {
     });
 
     let orderData = {
-      address: data,
+      address: {
+        ...data,
+        firstname: data.firstName,
+        lastname: data.lastName,
+      },
       items: orderItems,
       amount: getTotalCartAmount() + 2,
     };
@@ -51,8 +61,8 @@ const PlaceOrder = () => {
       });
 
       if (response.data.success) {
-        const { session_url } = response.data;
-        window.location.replace(session_url);
+        alert("Order placed successfully!");
+        navigate("/myorders");
       } else {
         alert("Order failed");
       }
@@ -63,11 +73,13 @@ const PlaceOrder = () => {
   };
 
   useEffect(() => {
+    console.log("TOKEN:", token);
+    console.log("Total:", getTotalCartAmount());
+
     if (!token || getTotalCartAmount() === 0) {
       navigate("/cart");
     }
   }, [token, getTotalCartAmount, navigate]);
-
 
   return (
     <div>

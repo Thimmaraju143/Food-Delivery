@@ -1,19 +1,30 @@
 import React, { useContext } from "react";
 import "./FoodDisplay.css";
-import { StoreContext } from "../../context/StoreContext";
+import { StoreContext } from "../../context/storeContext";
 import FoodItem from "../FoodItem/FoodItem";
 
-const FoodDisplay = ({ category = "All" }) => {
+const FoodDisplay = ({
+  category = "All",
+  restaurantId,
+  onFoodClick,
+  searchTerm = "",
+}) => {
   const { food_list } = useContext(StoreContext);
 
-const filteredList =
-  category === "All"
-    ? food_list
-    : food_list.filter(
-        (item) =>
-          item.category?.trim().toLowerCase() === category.trim().toLowerCase()
-      );
+  const filteredList = food_list.filter((item) => {
+    const matchesCategory =
+      category === "All" ||
+      item.category?.trim().toLowerCase() === category.trim().toLowerCase();
+    const matchesRestaurant =
+      !restaurantId || item.restaurantId === restaurantId;
+    const matchesSearch =
+      !searchTerm ||
+      item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category?.toLowerCase().includes(searchTerm.toLowerCase());
 
+    return matchesCategory && matchesRestaurant && matchesSearch;
+  });
 
   return (
     <div className="food-display" id="food-display">
@@ -28,6 +39,8 @@ const filteredList =
             price={item.price}
             image={item.image}
             category={item.category}
+            foodData={item}
+            onFoodClick={onFoodClick}
           />
         ))}
       </div>

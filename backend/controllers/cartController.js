@@ -1,4 +1,4 @@
-import userModel from "../models/userModel.mjs";
+import userModel from "../models/userModel.js";
 
 //add items to user cart
 const addToCart = async (req, res) => {
@@ -49,6 +49,5 @@ const getCart = async (req, res) => {
     res.json({ success: false, message: "Error retrieving cart data" });
   }
 };
-
 
 export { addToCart, removeFromCart, getCart };

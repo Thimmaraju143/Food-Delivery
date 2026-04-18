@@ -1,32 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./MyOrders.css";
-import { StoreContext } from "../../context/StoreContext";
+import { StoreContext } from "../../context/storeContext";
 import axios from "axios";
 import { assets } from "../../assets/assets";
 const MyOrders = () => {
   const { url, token } = useContext(StoreContext);
   const [data, setData] = useState([]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const response = await axios.post(
         url + "/api/order/userorders",
         {},
         {
           headers: { token },
-        }
+        },
       );
       setData(response.data.data);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
     }
-  };
+  }, [url, token]);
 
   useEffect(() => {
     if (token) {
       fetchOrders();
     }
-  }, [token]);
+  }, [token, fetchOrders]);
 
   return (
     <div className="my-orders">

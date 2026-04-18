@@ -1,33 +1,18 @@
-import React, { useState, useEffect } from "react";
-import "./Add.css";
+import React, { useState } from "react";
+import "./AddRestaurant.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const Add = ({ baseUrl }) => {
+const AddRestaurant = ({ baseUrl }) => {
   const [image, setImage] = useState(null);
-  const [restaurants, setRestaurants] = useState([]);
   const [data, setData] = useState({
     name: "",
     description: "",
-    price: "",
-    category: "Salad",
-    restaurantId: "",
+    location: "",
+    rating: "",
+    deliveryTime: "30-45 mins",
   });
-
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/api/restaurant/list`);
-        if (response.data.success) {
-          setRestaurants(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching restaurants:", error);
-      }
-    };
-    fetchRestaurants();
-  }, [baseUrl]);
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -45,25 +30,29 @@ const Add = ({ baseUrl }) => {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
-    formData.append("price", data.price);
-    formData.append("category", data.category);
-    formData.append("restaurantId", data.restaurantId);
+    formData.append("location", data.location);
+    formData.append("rating", data.rating);
+    formData.append("deliveryTime", data.deliveryTime);
     formData.append("image", image); // ✅ Append image file
 
     try {
-      const response = await axios.post(`${baseUrl}/api/food/add`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // ✅ Required for file upload
+      const response = await axios.post(
+        `${baseUrl}/api/restaurant/add`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // ✅ Required for file upload
+          },
         },
-      });
+      );
 
       if (response.data.success) {
         setData({
           name: "",
           description: "",
-          price: "",
-          category: "Salad",
-          restaurantId: "",
+          location: "",
+          rating: "",
+          deliveryTime: "30-45 mins",
         });
         setImage(null);
         toast.success(response.data.message);
@@ -98,7 +87,7 @@ const Add = ({ baseUrl }) => {
         </div>
 
         <div className="add-product-name flex-col">
-          <p>Product name</p>
+          <p>Restaurant name</p>
           <input
             type="text"
             name="name"
@@ -110,7 +99,7 @@ const Add = ({ baseUrl }) => {
         </div>
 
         <div className="add-product-description flex-col">
-          <p>Product description</p>
+          <p>Restaurant description</p>
           <textarea
             name="description"
             rows="6"
@@ -123,51 +112,40 @@ const Add = ({ baseUrl }) => {
 
         <div className="add-category-price">
           <div className="add-category flex-col">
-            <p>Product category</p>
-            <select
-              name="category"
-              value={data.category}
+            <p>Location</p>
+            <input
+              type="text"
+              name="location"
+              placeholder="Location"
+              value={data.location}
               onChange={onChangeHandler}
-            >
-              <option value="Salad">Salad</option>
-              <option value="Rolls">Rolls</option>
-              <option value="Desserts">Desserts</option>
-              <option value="Sandwich">Sandwich</option>
-              <option value="Cake">Cake</option>
-              <option value="Pure Veg">Pure Veg</option>
-              <option value="Pasta">Pasta</option>
-              <option value="Noodles">Noodles</option>
-            </select>
+              required
+            />
           </div>
 
           <div className="add-price flex-col">
-            <p>Product price</p>
+            <p>Rating</p>
             <input
               type="number"
-              name="price"
-              placeholder="$20"
-              value={data.price}
+              name="rating"
+              placeholder="4.5"
+              value={data.rating}
               onChange={onChangeHandler}
               required
             />
           </div>
         </div>
 
-        <div className="add-restaurant flex-col">
-          <p>Restaurant</p>
-          <select
-            name="restaurantId"
-            value={data.restaurantId}
+        <div className="add-delivery-time flex-col">
+          <p>Delivery Time</p>
+          <input
+            type="text"
+            name="deliveryTime"
+            placeholder="30-45 mins"
+            value={data.deliveryTime}
             onChange={onChangeHandler}
             required
-          >
-            <option value="">Select Restaurant</option>
-            {restaurants.map((restaurant) => (
-              <option key={restaurant._id} value={restaurant._id}>
-                {restaurant.name}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <button type="submit" className="add-btn">
@@ -178,4 +156,4 @@ const Add = ({ baseUrl }) => {
   );
 };
 
-export default Add;
+export default AddRestaurant;
